@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Simulated GPU (NVIDIA T4) and CUDA 12.6
-      uses: pantheongpu/pantheonsim@6bf58793e3a133d3091d425c9fe773f23a54deb0 # pantheonsim 335, 336, 337, rehearsal
+      uses: pantheongpu/setup-pantheonsim@06648b8c0cb091584196678593215db2e16bd7eb # v0.1.2
       with:
         gpu: nvidia/t4
         cuda-toolkit: '12.6'
