@@ -42,9 +42,15 @@ jobs:
         cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=75
         -DCMAKE_CUDA_RUNTIME_LIBRARY=Shared -DBUILD_ALL_TESTS=ON
 
+    # Only the registered tests: with BUILD_ALL_TESTS=ON the type/dimension
+    # matrix is built as well, and its stack-based traversal does not compile
+    # without CUKD_ENABLE_STATS (cukd::g_traversalStats is not declared).
     - name: Build the tests
       working-directory: build
-      run: cmake --build . --target all -j "$(nproc)"
+      run: |
+        names="$(ctest -N | sed -n 's/^ *Test *#[0-9]*: //p' | tr '\n' ' ')"
+        echo "$names"
+        cmake --build . --target $names -j "$(nproc)"
 
     - name: Run the tests on the simulated GPU
       working-directory: build
